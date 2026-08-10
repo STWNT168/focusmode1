@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/black"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FocusGuard"
+        android:textColor="@color/gold"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/statusText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No active session"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/enableAccessibilityBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enable Blocking Permission"
+        android:backgroundTint="@color/crimson"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select apps to block during focus:"
+        android:textColor="@color/white"
+        android:layout_marginBottom="8dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/appRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <EditText
+        android:id="@+id/durationInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Session duration (minutes)"
+        android:inputType="number"
+        android:textColor="@color/white"
+        android:textColorHint="#888888"
+        android:layout_marginTop="12dp" />
+
+    <CheckBox
+        android:id="@+id/commitmentModeCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Commitment Mode — can't stop early"
+        android:textColor="@color/gold"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/startBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start Focus Session"
+        android:backgroundTint="@color/gold"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/stopBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Stop Session"
+        android:backgroundTint="#555555"
+        android:layout_marginTop="8dp"
+        android:visibility="gone" />
+
+</LinearLayout>
