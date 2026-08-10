@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">FocusGuard</string>
+    <string name="accessibility_service_description">Blocks distracting apps during your focus sessions.</string>
+</resources>
