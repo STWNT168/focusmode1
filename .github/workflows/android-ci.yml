@@ -2,9 +2,9 @@ name: Android CI
 
 on:
   push:
-    branches: [ (root) ]
-  pull_request:
     branches: [ (root)]
+  pull_request:
+    branches: [(root)]
   workflow_dispatch:
 
 jobs:
@@ -37,14 +37,15 @@ jobs:
       - name: Cache buildozer project directory
         uses: actions/cache@v4
         with:
-          path: .buildozer
-          key: buildozer-project-${{ hashFiles('buildozer.spec') }}
+          path: focus-mode/.buildozer
+          key: buildozer-project-${{ hashFiles('focus-mode/buildozer.spec') }}
 
       - name: Build APK with Buildozer
+        working-directory: focus-mode
         run: buildozer -v android debug
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: focus-mode-apk
-          path: bin/*.apk
+          path: focus-mode/bin/*.apk
