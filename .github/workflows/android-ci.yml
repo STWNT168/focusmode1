@@ -2,50 +2,47 @@ name: Android CI
 
 on:
   push:
-    branches: [ (root)]
+    branches: ["(root)"]
   pull_request:
-    branches: [(root)]
+    branches: ["(root)"]
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-22.04
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
         with:
-          python-version: '3.11'
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
 
-      - name: Install system dependencies
+      - name: Set up Gradle 8.2
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.2'
+
+      - name: Verify Java and Gradle
         run: |
-          sudo apt-get update
-          sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip \
-            autoconf libtool pkg-config zlib1g-dev libncurses5-dev \
-            cmake libffi-dev libssl-dev
+          java -version
+          gradle --version
 
-      - name: Install buildozer
-        run: pip install --upgrade buildozer cython==0.29.36
+      - name: Install Android SDK packages
+        run: |
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.2"
 
-      - name: Cache buildozer global directory
-        uses: actions/cache@v4
-        with:
-          path: ~/.buildozer
-          key: buildozer-global-${{ hashFiles('buildozer.spec') }}
-
-      - name: Cache buildozer project directory
-        uses: actions/cache@v4
-        with:
-          path: focus-mode/.buildozer
-          key: buildozer-project-${{ hashFiles('focus-mode/buildozer.spec') }}
-
-      - name: Build APK with Buildozer
-        working-directory: focus-mode
-        run: buildozer -v android debug
+      - name: Build debug APK
+        run: gradle --no-daemon assembleDebug
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: focus-mode-apk
-          path: focus-mode/bin/*.apk
+          path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
