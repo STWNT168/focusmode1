@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 
 android {
     namespace 'com.satwant.focusguard'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.satwant.focusguard"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
     }
