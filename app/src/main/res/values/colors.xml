@@ -1,31 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
 
-    <!-- Metallic Blue palette -->
-    <color name="metal_blue">#3F6F91</color>
-    <color name="metal_blue_light">#6F9FBD</color>
-    <color name="metal_blue_dark">#1E3446</color>
-    <color name="metal_blue_deep">#142431</color>
+    <!-- Metallic Blue -->
 
-    <!-- Surfaces -->
-    <color name="background">#0B1117</color>
-    <color name="surface">#121D26</color>
-    <color name="surface_light">#1B2A35</color>
-    <color name="divider">#294150</color>
+    <color name="metal_blue">#416F91</color>
+    <color name="metal_blue_light">#78A9C8</color>
+    <color name="metal_blue_dark">#27465C</color>
+    <color name="metal_blue_deep">#142633</color>
+
+    <!-- Background -->
+
+    <color name="background">#080D12</color>
+    <color name="surface">#111A22</color>
+    <color name="surface_light">#1A2731</color>
+    <color name="divider">#29404F</color>
 
     <!-- Text -->
-    <color name="white">#F4F8FA</color>
-    <color name="text_secondary">#AEBEC8</color>
-    <color name="text_muted">#718490</color>
+
+    <color name="white">#F3F7F9</color>
+    <color name="text_secondary">#A9BAC5</color>
+    <color name="text_muted">#71838E</color>
 
     <!-- Status -->
-    <color name="success">#5FAF87</color>
-    <color name="warning">#D2A85A</color>
+
+    <color name="success">#62B58B</color>
+    <color name="warning">#D0A65A</color>
     <color name="danger">#B85C64</color>
 
-    <!-- Compatibility names used by existing resources -->
-    <color name="black">#0B1117</color>
+    <!-- Existing compatibility names -->
+
+    <color name="black">#080D12</color>
     <color name="crimson">#B85C64</color>
-    <color name="gold">#6F9FBD</color>
+    <color name="gold">#78A9C8</color>
 
 </resources>
