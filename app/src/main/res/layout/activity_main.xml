@@ -1,163 +1,526 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/background"
-    android:padding="18dp">
-
-    <!-- Header -->
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="FOCUSGUARD"
-        android:textColor="@color/metal_blue_light"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:letterSpacing="0.08"
-        android:gravity="center"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="4dp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="FOCUS • DISCIPLINE • CONTROL"
-        android:textColor="@color/text_muted"
-        android:textSize="11sp"
-        android:letterSpacing="0.12"
-        android:gravity="center"
-        android:layout_marginBottom="18dp" />
-
-    <!-- Status card -->
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@color/surface"
-        android:padding="16dp"
-        android:elevation="4dp"
-        android:layout_marginBottom="14dp">
+        android:padding="16dp">
+
+        <!-- Header -->
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="SESSION STATUS"
-            android:textColor="@color/text_muted"
-            android:textSize="11sp"
+            android:text="FOCUSGUARD"
+            android:textColor="@color/metal_blue_light"
+            android:textSize="28sp"
             android:textStyle="bold"
             android:letterSpacing="0.08"
+            android:gravity="center"
+            android:layout_marginTop="4dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="FOCUS • DISCIPLINE • CONTROL"
+            android:textColor="@color/text_muted"
+            android:textSize="11sp"
+            android:letterSpacing="0.10"
+            android:gravity="center"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- TODAY -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/surface"
+            android:padding="18dp"
+            android:elevation="4dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TODAY'S FOCUS"
+                android:textColor="@color/text_muted"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.10" />
+
+            <TextView
+                android:id="@+id/todayFocusText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0m"
+                android:textColor="@color/white"
+                android:textSize="38sp"
+                android:textStyle="bold"
+                android:layout_marginTop="4dp" />
+
+            <TextView
+                android:id="@+id/todayGoalText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="GOAL • 2h"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
+
+            <ProgressBar
+                android:id="@+id/todayProgress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:max="120"
+                android:progress="0"
+                android:progressTint="@color/metal_blue_light"
+                android:backgroundTint="@color/metal_blue_deep"
+                android:layout_marginTop="14dp" />
+
+            <TextView
+                android:id="@+id/progressPercentText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0%"
+                android:textColor="@color/metal_blue_light"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:gravity="end"
+                android:layout_marginTop="5dp" />
+
+        </LinearLayout>
+
+        <!-- STATS -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="90dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@color/surface"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/streakText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/metal_blue_light"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:gravity="center" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="DAY STREAK"
+                    android:textColor="@color/text_muted"
+                    android:textSize="10sp"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="1dp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="90dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@color/surface"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/sessionsText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/metal_blue_light"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:gravity="center" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="SESSIONS TODAY"
+                    android:textColor="@color/text_muted"
+                    android:textSize="10sp"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- WEEK -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/surface"
+            android:padding="16dp"
+            android:layout_marginTop="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="THIS WEEK"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.08" />
+
+                <TextView
+                    android:id="@+id/weekTotalText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0m"
+                    android:textColor="@color/metal_blue_light"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <!-- Monday -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="38dp"
+                    android:layout_height="wrap_content"
+                    android:text="MON"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/monValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="—"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:gravity="end" />
+
+            </LinearLayout>
+
+            <!-- Tuesday -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="38dp"
+                    android:layout_height="wrap_content"
+                    android:text="TUE"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/tueValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="—"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:gravity="end" />
+
+            </LinearLayout>
+
+            <!-- Wednesday -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="38dp"
+                    android:layout_height="wrap_content"
+                    android:text="WED"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/wedValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="—"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:gravity="end" />
+
+            </LinearLayout>
+
+            <!-- Thursday -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="38dp"
+                    android:layout_height="wrap_content"
+                    android:text="THU"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/thuValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="—"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:gravity="end" />
+
+            </LinearLayout>
+
+            <!-- Friday -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="38dp"
+                    android:layout_height="wrap_content"
+                    android:text="FRI"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/friValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="—"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:gravity="end" />
+
+            </LinearLayout>
+
+            <!-- Saturday -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="38dp"
+                    android:layout_height="wrap_content"
+                    android:text="SAT"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/satValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="—"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:gravity="end" />
+
+            </LinearLayout>
+
+            <!-- Sunday -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="38dp"
+                    android:layout_height="wrap_content"
+                    android:text="SUN"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/sunValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="—"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:gravity="end" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- SESSION STATUS -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/metal_blue_deep"
+            android:padding="14dp"
+            android:layout_marginTop="12dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="SESSION"
+                android:textColor="@color/text_muted"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/statusText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="READY FOR YOUR NEXT SESSION"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginTop="4dp" />
+
+        </LinearLayout>
+
+        <!-- ACCESSIBILITY -->
+
+        <Button
+            android:id="@+id/enableAccessibilityBtn"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="ENABLE BLOCKING ACCESS"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="12sp"
+            android:backgroundTint="@color/metal_blue_dark"
+            android:layout_marginTop="12dp" />
+
+        <!-- APP SELECTOR -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="APPS TO BLOCK"
+            android:textColor="@color/metal_blue_light"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.08"
+            android:layout_marginTop="18dp"
             android:layout_marginBottom="6dp" />
 
         <TextView
-            android:id="@+id/statusText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="No active session"
+            android:text="Choose the apps that should be blocked during your focus session."
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:layout_marginBottom="8dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/appRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:background="@color/surface" />
+
+        <!-- DURATION -->
+
+        <EditText
+            android:id="@+id/durationInput"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:hint="Session duration (minutes)"
+            android:inputType="number"
+            android:singleLine="true"
             android:textColor="@color/white"
-            android:textSize="17sp"
-            android:textStyle="bold" />
+            android:textColorHint="@color/text_muted"
+            android:backgroundTint="@color/metal_blue"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:layout_marginTop="12dp" />
+
+        <!-- COMMITMENT -->
+
+        <CheckBox
+            android:id="@+id/commitmentModeCheckBox"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Commitment Mode — can't stop early"
+            android:textColor="@color/text_secondary"
+            android:buttonTint="@color/metal_blue_light" />
+
+        <!-- START -->
+
+        <Button
+            android:id="@+id/startBtn"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:text="START FOCUS SESSION"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="13sp"
+            android:letterSpacing="0.04"
+            android:backgroundTint="@color/metal_blue"
+            android:layout_marginTop="4dp" />
+
+        <!-- STOP -->
+
+        <Button
+            android:id="@+id/stopBtn"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="STOP SESSION"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="13sp"
+            android:backgroundTint="@color/danger"
+            android:layout_marginTop="7dp"
+            android:visibility="gone" />
 
     </LinearLayout>
 
-    <!-- Accessibility -->
-
-    <Button
-        android:id="@+id/enableAccessibilityBtn"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:text="ENABLE BLOCKING ACCESS"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:textSize="13sp"
-        android:letterSpacing="0.04"
-        android:backgroundTint="@color/metal_blue_dark"
-        android:layout_marginBottom="14dp" />
-
-    <!-- App selector -->
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="APPS TO BLOCK"
-        android:textColor="@color/metal_blue_light"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        android:letterSpacing="0.08"
-        android:layout_marginBottom="7dp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Select applications that should remain unavailable during your focus session."
-        android:textColor="@color/text_secondary"
-        android:textSize="12sp"
-        android:layout_marginBottom="9dp" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/appRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/surface" />
-
-    <!-- Duration -->
-
-    <EditText
-        android:id="@+id/durationInput"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:hint="Session duration (minutes)"
-        android:inputType="number"
-        android:singleLine="true"
-        android:textColor="@color/white"
-        android:textColorHint="@color/text_muted"
-        android:backgroundTint="@color/metal_blue"
-        android:paddingStart="14dp"
-        android:paddingEnd="14dp"
-        android:layout_marginTop="14dp" />
-
-    <!-- Commitment -->
-
-    <CheckBox
-        android:id="@+id/commitmentModeCheckBox"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="Commitment Mode — can't stop early"
-        android:textColor="@color/text_secondary"
-        android:buttonTint="@color/metal_blue_light"
-        android:layout_marginTop="5dp" />
-
-    <!-- Start -->
-
-    <Button
-        android:id="@+id/startBtn"
-        android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:text="START FOCUS SESSION"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:textSize="14sp"
-        android:letterSpacing="0.05"
-        android:backgroundTint="@color/metal_blue"
-        android:layout_marginTop="6dp" />
-
-    <!-- Stop -->
-
-    <Button
-        android:id="@+id/stopBtn"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:text="STOP SESSION"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:textSize="13sp"
-        android:backgroundTint="@color/danger"
-        android:layout_marginTop="7dp"
-        android:visibility="gone" />
-
-</LinearLayout>
+</ScrollView>
