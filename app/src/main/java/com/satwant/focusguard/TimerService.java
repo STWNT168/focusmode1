@@ -18,6 +18,7 @@ public class TimerService extends Service {
 
     private static final String CHANNEL_ID = "focusguard_timer";
     private static final int NOTIF_ID = 1001;
+
     private CountDownTimer countDownTimer;
 
     @Override
@@ -27,70 +28,212 @@ public class TimerService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        long endTime = intent.getLongExtra("end_time", System.currentTimeMillis());
-        long remaining = endTime - System.currentTimeMillis();
-        if (remaining <= 0) remaining = 1000;
+    public int onStartCommand(
+            Intent intent,
+            int flags,
+            int startId
+    ) {
 
-        startForeground(NOTIF_ID, buildNotification("Focus session running…"));
+        SharedPreferences prefs =
+                getSharedPreferences(
+                        MainActivity.PREFS,
+                        MODE_PRIVATE
+                );
 
-        if (countDownTimer != null) countDownTimer.cancel();
-        countDownTimer = new CountDownTimer(remaining, 30_000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                long minutes = millisUntilFinished / 60000;
-                updateNotification(minutes + " min remaining — stay focused");
-            }
+        long endTime;
 
-            @Override
-            public void onFinish() {
-                SharedPreferences prefs = getSharedPreferences(MainActivity.PREFS, MODE_PRIVATE);
-                prefs.edit()
-                        .putBoolean(MainActivity.KEY_SESSION_ACTIVE, false)
-                        .putBoolean(MainActivity.KEY_COMMITMENT_MODE, false)
-                        .apply();
-                updateNotification("Focus session complete");
-                stopForeground(false);
-                stopSelf();
-            }
-        }.start();
+        if (intent != null && intent.hasExtra("end_time")) {
 
-        return START_STICKY;
+            endTime =
+                    intent.getLongExtra(
+                            "end_time",
+                            System.currentTimeMillis()
+                    );
+
+        } else {
+
+            endTime =
+                    prefs.getLong(
+                            MainActivity.KEY_SESSION_END,
+                            0
+                    );
+        }
+
+        long remaining =
+                endTime - System.currentTimeMillis();
+
+        if (remaining <= 0) {
+
+            prefs.edit()
+                    .putBoolean(
+                            MainActivity.KEY_SESSION_ACTIVE,
+                            false
+                    )
+                    .putBoolean(
+                            MainActivity.KEY_COMMITMENT_MODE,
+                            false
+                    )
+                    .apply();
+
+            stopSelf();
+
+            return START_NOT_STICKY;
+        }
+
+        /*
+         * Android 14+ requires this service to have an appropriate
+         * foregroundServiceType declared in AndroidManifest.xml.
+         */
+        startForeground(
+                NOTIF_ID,
+                buildNotification("Focus session running…")
+        );
+
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+
+        countDownTimer =
+                new CountDownTimer(
+                        remaining,
+                        30_000
+                ) {
+
+                    @Override
+                    public void onTick(
+                            long millisUntilFinished
+                    ) {
+
+                        long minutes =
+                                Math.max(
+                                        1,
+                                        millisUntilFinished
+                                                / 60000
+                                );
+
+                        updateNotification(
+                                minutes
+                                        + " min remaining — stay focused"
+                        );
+                    }
+
+                    @Override
+                    public void onFinish() {
+
+                        SharedPreferences prefs =
+                                getSharedPreferences(
+                                        MainActivity.PREFS,
+                                        MODE_PRIVATE
+                                );
+
+                        prefs.edit()
+                                .putBoolean(
+                                        MainActivity.KEY_SESSION_ACTIVE,
+                                        false
+                                )
+                                .putBoolean(
+                                        MainActivity.KEY_COMMITMENT_MODE,
+                                        false
+                                )
+                                .apply();
+
+                        updateNotification(
+                                "Focus session complete"
+                        );
+
+                        stopForeground(false);
+                        stopSelf();
+                    }
+                };
+
+        countDownTimer.start();
+
+        return START_NOT_STICKY;
     }
 
     private void createChannel() {
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(
-                    CHANNEL_ID, "Focus Timer", NotificationManager.IMPORTANCE_LOW);
-            NotificationManager nm = getSystemService(NotificationManager.class);
-            if (nm != null) nm.createNotificationChannel(channel);
+
+            NotificationChannel channel =
+                    new NotificationChannel(
+                            CHANNEL_ID,
+                            "Focus Timer",
+                            NotificationManager.IMPORTANCE_LOW
+                    );
+
+            channel.setDescription(
+                    "Notification showing the active FocusGuard timer."
+            );
+
+            NotificationManager nm =
+                    getSystemService(
+                            NotificationManager.class
+                    );
+
+            if (nm != null) {
+                nm.createNotificationChannel(channel);
+            }
         }
     }
 
     private Notification buildNotification(String text) {
-        Intent openIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-                this, 0, openIntent,
-                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
-        return new NotificationCompat.Builder(this, CHANNEL_ID)
+        Intent openIntent =
+                new Intent(this, MainActivity.class);
+
+        PendingIntent pendingIntent =
+                PendingIntent.getActivity(
+                        this,
+                        0,
+                        openIntent,
+                        PendingIntent.FLAG_IMMUTABLE
+                                | PendingIntent.FLAG_UPDATE_CURRENT
+                );
+
+        return new NotificationCompat.Builder(
+                this,
+                CHANNEL_ID
+        )
                 .setContentTitle("FocusGuard")
                 .setContentText(text)
                 .setSmallIcon(android.R.drawable.ic_lock_lock)
                 .setContentIntent(pendingIntent)
                 .setOngoing(true)
+                .setCategory(
+                        NotificationCompat.CATEGORY_SERVICE
+                )
+                .setPriority(
+                        NotificationCompat.PRIORITY_LOW
+                )
                 .build();
     }
 
     private void updateNotification(String text) {
-        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        if (nm != null) nm.notify(NOTIF_ID, buildNotification(text));
+
+        NotificationManager nm =
+                (NotificationManager)
+                        getSystemService(
+                                NOTIFICATION_SERVICE
+                        );
+
+        if (nm != null) {
+            nm.notify(
+                    NOTIF_ID,
+                    buildNotification(text)
+            );
+        }
     }
 
     @Override
     public void onDestroy() {
+
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            countDownTimer = null;
+        }
+
         super.onDestroy();
-        if (countDownTimer != null) countDownTimer.cancel();
     }
 
     @Nullable
