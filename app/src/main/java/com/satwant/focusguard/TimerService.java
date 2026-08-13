@@ -16,14 +16,18 @@ import androidx.core.app.NotificationCompat;
 
 public class TimerService extends Service {
 
-    private static final String CHANNEL_ID = "focusguard_timer";
-    private static final int NOTIF_ID = 1001;
+    private static final String CHANNEL_ID =
+            "focusguard_timer";
+
+    private static final int NOTIF_ID =
+            1001;
 
     private CountDownTimer countDownTimer;
 
     @Override
     public void onCreate() {
         super.onCreate();
+
         createChannel();
     }
 
@@ -42,7 +46,8 @@ public class TimerService extends Service {
 
         long endTime;
 
-        if (intent != null && intent.hasExtra("end_time")) {
+        if (intent != null
+                && intent.hasExtra("end_time")) {
 
             endTime =
                     intent.getLongExtra(
@@ -60,7 +65,8 @@ public class TimerService extends Service {
         }
 
         long remaining =
-                endTime - System.currentTimeMillis();
+                endTime
+                        - System.currentTimeMillis();
 
         if (remaining <= 0) {
 
@@ -80,13 +86,11 @@ public class TimerService extends Service {
             return START_NOT_STICKY;
         }
 
-        /*
-         * Android 14+ requires this service to have an appropriate
-         * foregroundServiceType declared in AndroidManifest.xml.
-         */
         startForeground(
                 NOTIF_ID,
-                buildNotification("Focus session running…")
+                buildNotification(
+                        "Focus session running…"
+                )
         );
 
         if (countDownTimer != null) {
@@ -126,22 +130,60 @@ public class TimerService extends Service {
                                         MODE_PRIVATE
                                 );
 
+                        /*
+                         * IMPORTANT:
+                         *
+                         * Only record the session here.
+                         * Stopping early does not count.
+                         */
+                        int duration =
+                                prefs.getInt(
+                                        MainActivity
+                                                .KEY_SESSION_DURATION,
+                                        0
+                                );
+
+                        if (duration > 0) {
+
+                            MainActivity
+                                    .recordCompletedSession(
+                                            prefs,
+                                            duration
+                                    );
+
+                            MainActivity
+                                    .recordCompletedSessionCount(
+                                            prefs
+                                    );
+                        }
+
                         prefs.edit()
                                 .putBoolean(
-                                        MainActivity.KEY_SESSION_ACTIVE,
+                                        MainActivity
+                                                .KEY_SESSION_ACTIVE,
                                         false
                                 )
                                 .putBoolean(
-                                        MainActivity.KEY_COMMITMENT_MODE,
+                                        MainActivity
+                                                .KEY_COMMITMENT_MODE,
                                         false
+                                )
+                                .remove(
+                                        MainActivity
+                                                .KEY_SESSION_START
+                                )
+                                .remove(
+                                        MainActivity
+                                                .KEY_SESSION_DURATION
                                 )
                                 .apply();
 
                         updateNotification(
-                                "Focus session complete"
+                                "Focus session complete ✓"
                         );
 
                         stopForeground(false);
+
                         stopSelf();
                     }
                 };
@@ -153,13 +195,15 @@ public class TimerService extends Service {
 
     private void createChannel() {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT
+                >= Build.VERSION_CODES.O) {
 
             NotificationChannel channel =
                     new NotificationChannel(
                             CHANNEL_ID,
                             "Focus Timer",
-                            NotificationManager.IMPORTANCE_LOW
+                            NotificationManager
+                                    .IMPORTANCE_LOW
                     );
 
             channel.setDescription(
@@ -172,15 +216,22 @@ public class TimerService extends Service {
                     );
 
             if (nm != null) {
-                nm.createNotificationChannel(channel);
+                nm.createNotificationChannel(
+                        channel
+                );
             }
         }
     }
 
-    private Notification buildNotification(String text) {
+    private Notification buildNotification(
+            String text
+    ) {
 
         Intent openIntent =
-                new Intent(this, MainActivity.class);
+                new Intent(
+                        this,
+                        MainActivity.class
+                );
 
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(
@@ -195,21 +246,31 @@ public class TimerService extends Service {
                 this,
                 CHANNEL_ID
         )
-                .setContentTitle("FocusGuard")
+                .setContentTitle(
+                        "FocusGuard"
+                )
                 .setContentText(text)
-                .setSmallIcon(android.R.drawable.ic_lock_lock)
-                .setContentIntent(pendingIntent)
+                .setSmallIcon(
+                        android.R.drawable.ic_lock_lock
+                )
+                .setContentIntent(
+                        pendingIntent
+                )
                 .setOngoing(true)
                 .setCategory(
-                        NotificationCompat.CATEGORY_SERVICE
+                        NotificationCompat
+                                .CATEGORY_SERVICE
                 )
                 .setPriority(
-                        NotificationCompat.PRIORITY_LOW
+                        NotificationCompat
+                                .PRIORITY_LOW
                 )
                 .build();
     }
 
-    private void updateNotification(String text) {
+    private void updateNotification(
+            String text
+    ) {
 
         NotificationManager nm =
                 (NotificationManager)
@@ -218,6 +279,7 @@ public class TimerService extends Service {
                         );
 
         if (nm != null) {
+
             nm.notify(
                     NOTIF_ID,
                     buildNotification(text)
@@ -229,7 +291,9 @@ public class TimerService extends Service {
     public void onDestroy() {
 
         if (countDownTimer != null) {
+
             countDownTimer.cancel();
+
             countDownTimer = null;
         }
 
@@ -238,7 +302,9 @@ public class TimerService extends Service {
 
     @Nullable
     @Override
-    public IBinder onBind(Intent intent) {
+    public IBinder onBind(
+            Intent intent
+    ) {
         return null;
     }
 }
